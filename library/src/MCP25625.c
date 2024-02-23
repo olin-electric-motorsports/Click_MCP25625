@@ -70,8 +70,10 @@ static mcp25625_transfer    transfer;
 //      STATUS TYPES
 //---------------------------------------
 static mcp25625_can_stat    can_stat;
-static rx_fstatus           rx_status;
-static can_fstatus          status;
+
+// REDACTED FOR COMPILATION - VARIABLES NOT USED
+// static rx_fstatus           rx_status;
+// static can_fstatus          status;
 
 /******************************************************************************
 * Function Prototypes
@@ -335,7 +337,7 @@ int mcp25625_btl_config
     if( mcp25625_hw_ctl_set( ( void* )&cnf_1 ) || \
         mcp25625_hw_ctl_set( ( void* )&cnf_2 ) || \
         mcp25625_hw_ctl_set( ( void* )&cnf_3 ) )
-        MCP25625_CTL_ERR;
+        return MCP25625_CTL_ERR;
 
     if( mcp25625_mode( default_mode ) )
         return MCP25625_MODE_FAULT;

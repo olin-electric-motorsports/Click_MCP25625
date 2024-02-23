@@ -19,6 +19,7 @@
 * Includes
 *******************************************************************************/
 #include "MCP25625_hal.h"
+
 /******************************************************************************
 * Module Preprocessor Constants
 *******************************************************************************/
@@ -119,23 +120,24 @@ void MCP25625_hal_tx1( int state )
 #endif
 }
 
-int MCP25625_hal_rx0()
-{
-#ifdef __GNUC__
+// REDACTED FOR COMPILATION
+// int MCP25625_hal_rx0()
+// {
+// #ifdef __GNUC__
 
-#else
-    return MCP25625_RX0;
-#endif
-}
+// #else
+//     return MCP25625_RX0;
+// #endif
+// }
 
-int MCP25625_hal_rx1()
-{
-#ifdef __GNUC__
+// int MCP25625_hal_rx1()
+// {
+// #ifdef __GNUC__
 
-#else
-    return MCP25625_RX1;
-#endif
-}
+// #else
+//     return MCP25625_RX1;
+// #endif
+// }
 
 void MCP25625_hal_init()
 {

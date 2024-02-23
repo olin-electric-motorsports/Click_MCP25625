@@ -23,6 +23,8 @@
 
 #include "MCP25625_hw.h"
 
+// AVR Specific Addition for `_delay_ms`
+#include <util/delay.h>
 /******************************************************************************
 * Module Preprocessor Constants
 *******************************************************************************/
@@ -215,11 +217,11 @@ int mcp25625_pin_reset
 )
 {
     MCP25625_hal_rst( 1 );
-    Delay_ms( 10 );
+    _delay_ms( 10 );
     MCP25625_hal_rst( 0 );
-    Delay_ms( 10 );
+    _delay_ms( 10 );
     MCP25625_hal_rst( 1 );
-    Delay_ms( 10 );
+    _delay_ms( 10 );
 
     return 0;
 }
