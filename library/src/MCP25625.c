@@ -572,14 +572,14 @@ int mcp25625_msg_read
         uint8_t *msg,
         uint8_t *count,
         uint32_t *ID,
-        bool *IDE,
+        bool *ide,
         bool *RTR
 )
 {
     if( mcp25625_hw_data_get( rx_buffer, &transfer ) )
         return MCP25625_RX_ERR;
 
-    if( ( *IDE = transfer.id.sidl.ide ) )
+    if( ( *ide = transfer.id.sidl.ide ) )
     {
         *RTR = transfer.payload.dlc.rtr;
         unpack_eid( &transfer.id, ID );

@@ -286,15 +286,7 @@ bool mcp25625_msg_ready
  * @param[out] IDE - ( SID / EID )
  * @param[out] RTR - message is remote transfer request
  */
-int mcp25625_msg_read
-(
-        RXB_t rx_buffer,
-        uint8_t *msg,
-        uint8_t *count,
-        uint32_t *ID,
-        bool *IDE,
-        bool *RTR
-);
+int mcp25625_msg_read(RXB_t rx_buffer, uint8_t *msg, uint8_t *count, uint32_t *ID, bool *ide, bool *RTR);
 
 #ifdef __cplusplus
 } // extern "C"
