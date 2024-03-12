@@ -3,5 +3,6 @@ cc_library(
     hdrs = glob(["**/*.h"]),
     strip_include_prefix = "library/include",
     srcs = glob(["library/**/*.c"]),
-    visibility = ["//visibility:public"]
+    visibility = ["//visibility:public"],
+    deps = ["//libs/gpio", "//libs/spi"]
 )

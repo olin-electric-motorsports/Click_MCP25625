@@ -217,11 +217,12 @@ int mcp25625_pin_reset
 )
 {
     MCP25625_hal_rst( 1 );
-    _delay_ms( 10 );
+    // putting for loops instead of delay function cuz delay library is not "optimized" --> dumb fix
+    _delay_ms(10);
     MCP25625_hal_rst( 0 );
-    _delay_ms( 10 );
+    _delay_ms(10);
     MCP25625_hal_rst( 1 );
-    _delay_ms( 10 );
+    _delay_ms(10);
 
     return 0;
 }

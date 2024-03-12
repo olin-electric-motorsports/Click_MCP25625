@@ -19,6 +19,9 @@
 * Includes
 *******************************************************************************/
 #include "MCP25625_hal.h"
+#include "libs/gpio/pin_defs.h"
+#include "libs/gpio/api.h"
+#include "libs/spi/api.h"
 
 /******************************************************************************
 * Module Preprocessor Constants
@@ -27,7 +30,7 @@
 /******************************************************************************
 * Module Preprocessor Macros
 *******************************************************************************/
-
+#define __MIKROC_PRO_FOR_AVR__ (1)
 /******************************************************************************
 * Module Typedefs
 *******************************************************************************/
@@ -44,8 +47,8 @@ static unsigned int     ( *read_spi_p )     ( unsigned int buffer );
       defined( __MIKROC_PRO_FOR_PIC__ )     || \
       defined( __MIKROC_PRO_FOR_8051__ )    || \
       defined( __MIKROC_PRO_FOR_FT90x__ )
-static void             ( *write_spi_p )    ( unsigned char data_out );
-static unsigned char    ( *read_spi_p )     ( unsigned char dummy );
+//static void             ( *write_spi_p )    ( unsigned char data_out );
+// static unsigned char    ( *read_spi_p )     ( unsigned char dummy );
 
 #elif defined( __MIKROC_PRO_FOR_PIC32__ )
 static void             ( *write_spi_p )    ( unsigned long data_out );
@@ -60,23 +63,32 @@ static unsigned long    ( *read_spi_p )     ( unsigned long buffer );
     defined( __MIKROC_PRO_FOR_DSPIC__ )   || \
     defined( __MIKROC_PRO_FOR_8051__ )    || \
     defined( __MIKROC_PRO_FOR_FT90x__ )
-extern sfr sbit MCP25625_CS;
-extern sfr sbit MCP25625_RST;
-extern sfr sbit MCP25625_STB;
-extern sfr sbit MCP25625_TX0;
-extern sfr sbit MCP25625_TX1;
-extern sfr sbit MCP25625_RX0;
-extern sfr sbit MCP25625_RX1;
+// REDACTED SINCE WE DON'T USE SFR FOR GPIO PINS
+// extern sfr sbit MCP25625_CS;
+// extern sfr sbit MCP25625_RST;
+// extern sfr sbit MCP25625_STB;
+// extern sfr sbit MCP25625_TX0;
+// extern sfr sbit MCP25625_TX1;
+// extern sfr sbit MCP25625_RX0;
+// extern sfr sbit MCP25625_RX1;
 #endif
 /******************************************************************************
 * Function Prototypes
 *******************************************************************************/
-
+gpio_t CHARGER_CS = PC4;
+gpio_t CHARGER_RESET = PC5;
+gpio_t CHARGER_STBY = PB6;
 /******************************************************************************
 * Function Definitions
 *******************************************************************************/
 void MCP25625_hal_cs( int state )
 {
+    if (state == 0){
+        gpio_clear_pin(CHARGER_CS);
+    }
+    if (state == 1){
+        gpio_set_pin(CHARGER_CS);
+    }
 #ifdef __GNUC__
 
 #else
@@ -86,6 +98,12 @@ void MCP25625_hal_cs( int state )
 
 void MCP25625_hal_rst( int state )
 {
+    if (state == 0){
+        gpio_clear_pin(CHARGER_RESET);
+    }
+    if (state == 1){
+        gpio_set_pin(CHARGER_RESET);
+    }
 #ifdef __GNUC__
 
 #else
@@ -95,6 +113,12 @@ void MCP25625_hal_rst( int state )
 
 void MCP25625_hal_stb( int state )
 {
+    if (state == 0){
+        gpio_clear_pin(CHARGER_STBY);
+    }
+    if (state == 1){
+        gpio_set_pin(CHARGER_STBY);
+    }
 #ifdef __GNUC__
 
 #else
@@ -141,14 +165,17 @@ void MCP25625_hal_tx1( int state )
 
 void MCP25625_hal_init()
 {
+    gpio_set_mode(CHARGER_CS, OUTPUT);
+    gpio_set_mode(CHARGER_RESET, OUTPUT);
+    gpio_set_mode(CHARGER_STBY, OUTPUT);
 #if defined( __MIKROC_PRO_FOR_ARM__ )   || \
     defined( __MIKROC_PRO_FOR_AVR__ )   || \
     defined( __MIKROC_PRO_FOR_DSPIC__ ) || \
     defined( __MIKROC_PRO_FOR_PIC32__ ) || \
     defined( __MIKROC_PRO_FOR_8051__ )  || \
     defined( __MIKROC_PRO_FOR_FT90x__ )
-    write_spi_p             = SPI_Wr_Ptr;
-    read_spi_p              = SPI_Rd_Ptr;
+    //write_spi_p             = SPI_Wr_Ptr;
+    // read_spi_p              = SPI_Rd_Ptr;
 
 #elif defined( __MIKROC_PRO_FOR_PIC__ )
     write_spi_p             = SPI1_Write;
@@ -165,7 +192,8 @@ void MCP25625_hal_cmd( uint8_t cmd )
     defined( __MIKROC_PRO_FOR_8051__ )  || \
     defined( __MIKROC_PRO_FOR_FT90x__ ) || \
     defined( __MIKROC_PRO_FOR_PIC__ )
-    write_spi_p( cmd );
+    spi_transceive(&cmd, NULL, 1);
+    // write_spi_p( cmd );
 #endif
 }
 
@@ -179,8 +207,9 @@ void MCP25625_hal_write( uint8_t *buffer,
     defined( __MIKROC_PRO_FOR_8051__ )  || \
     defined( __MIKROC_PRO_FOR_FT90x__ ) || \
     defined( __MIKROC_PRO_FOR_PIC__ )
-    while( count-- )
-        write_spi_p( *buffer++ );
+    //while( count-- )
+    spi_transceive(buffer, NULL, count);
+        // write_spi_p( *buffer++ );
 #endif
 }
 
@@ -194,8 +223,9 @@ void MCP25625_hal_read( uint8_t *buffer,
     defined( __MIKROC_PRO_FOR_8051__ )  || \
     defined( __MIKROC_PRO_FOR_FT90x__ ) || \
     defined( __MIKROC_PRO_FOR_PIC__ )
-    while( count-- )
-        *buffer++ = read_spi_p( DUMMY_BYTE );
+    // while( count-- )
+    //     *buffer++ = read_spi_p( DUMMY_BYTE );
+    spi_receive(buffer, count);
 #endif
 }
 

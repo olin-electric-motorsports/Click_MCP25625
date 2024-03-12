@@ -160,6 +160,7 @@ void MCP25625_hal_write( uint8_t *buffer,
  * @param[out] buffer
  * @param[in] count
  */
+
 void MCP25625_hal_read( uint8_t *buffer,
                         uint16_t count );
 
